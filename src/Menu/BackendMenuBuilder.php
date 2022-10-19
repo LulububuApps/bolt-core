@@ -260,6 +260,16 @@ final class BackendMenuBuilder implements BackendMenuBuilderInterface
             ]);
         }
 
+        if ($this->authorizationChecker->isGranted('translation')) {
+            $menu->getChild('Maintenance')->addChild('ContentTranslations', [
+                'uri' => $this->urlGenerator->generate('bolt_content_translations_index'),
+                'extras' => [
+                    'name' => $t->trans('caption.content_translations'),
+                    'icon' => 'fa-language',
+                ],
+            ]);
+        }
+
         // Hide this menu item, unless we're on a "Git clone" install and user has 'kitchensink' permissions
         if (Version::installType() === 'Git clone' && $this->authorizationChecker->isGranted('kitchensink')) {
             $menu->getChild('Maintenance')->addChild('The Kitchensink', [
