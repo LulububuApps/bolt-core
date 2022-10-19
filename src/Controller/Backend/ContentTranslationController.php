@@ -391,7 +391,7 @@ class ContentTranslationController extends AbstractController implements Backend
     private function createZipFile(): Response
     {
         $zip     = new ZipArchive();
-        $files   = glob(sys_get_temp_dir() . $this->currentHost . '.*.xlf');
+        $files   = glob(sys_get_temp_dir() . '/' . $this->currentHost . '.*.xlf');
         $zipName = $this->currentHost . '.zip';
 
         $zip->open(
