@@ -154,7 +154,7 @@ class ContentEditController extends TwigAwareController implements BackendZoneIn
      *     requirements={"contentTypeSlug"="%bolt.requirement.contenttypes%"},
      *     methods={"GET"})
      */
-    public function editFromSlug(?string $contentTypeSlug = null, $slugOrId): Response
+    public function editFromSlug($slugOrId, ?string $contentTypeSlug = null): Response
     {
         $contentType = ContentType::factory($contentTypeSlug, $this->config->get('contenttypes'));
         $record = $this->contentRepository->findOneBySlug($slugOrId, $contentType);
