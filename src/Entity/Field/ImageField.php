@@ -46,6 +46,10 @@ class ImageField extends Field implements FieldInterface, MediaAwareInterface, C
     {
         $value = array_merge($this->getFieldBase(), (array) parent::getValue() ?: []);
 
+        if (empty($value['filename'])) {
+            $value = array_merge($this->getFieldBase(), $this->translate($this->getDefaultLocale(), false)->getValue());
+        }
+
         // Remove cruft `0` field getting stored as JSON.
         unset($value[0]);
 
