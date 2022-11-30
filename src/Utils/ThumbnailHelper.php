@@ -36,7 +36,7 @@ class ThumbnailHelper
             $location = null;
         }
 
-        return implode('×', array_filter([$width, $height, $fit, $location]));
+        return implode('x', array_filter([$width, $height, $fit, $location]));
     }
 
     public function path(?string $filename = null, ?int $width = null, ?int $height = null, ?string $location = null, ?string $path = null, ?string $fit = null): string
