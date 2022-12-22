@@ -124,6 +124,17 @@ class ContentTranslationController extends AbstractController implements Backend
         $this->currentHost   = $request->getHttpHost();
         $this->locales       = $this->config->getLocales();
         $this->defaultLocale = $this->config->getDefaultLocale();
+        $catalogues          = $this->generateTranslationCatalogues();
+
+        return $this->createZipFile();
+    }
+
+    /**
+     * @return void
+     * @throws Exception
+     */
+    private function generateTranslationCatalogues()
+    {
         $catalogues          = $this->createCatalogues();
         $translations        = $this->getExistingTranslations();
         $groupedTranslations = $this->groupTranslations($translations);
@@ -131,7 +142,7 @@ class ContentTranslationController extends AbstractController implements Backend
         $this->addTranslationsToCatalogues($catalogues, $groupedTranslations);
         $this->dumpCatalogues($catalogues);
 
-        return $this->createZipFile();
+        return $catalogues;
     }
 
     /**
@@ -147,7 +158,8 @@ class ContentTranslationController extends AbstractController implements Backend
      */
     public function importAction(Request $request): Response
     {
-        $form = $this->getForm();
+        $notFound = [];
+        $form     = $this->getForm();
 
         $form->handleRequest();
 
@@ -162,7 +174,25 @@ class ContentTranslationController extends AbstractController implements Backend
 
                 foreach ($files as $file) {
                     if ($file instanceof UploadedFile) {
-                        $this->processXlfTranslations($file);
+                        $notFound = [...$notFound, ...$this->processXlfTranslations($file)];
+                    }
+                }
+
+                if (count($notFound)) {
+                    foreach ($notFound as $locale => $fields) {
+                        $notFoundValues = implode(', <br />', $fields);
+
+                        $request->getSession()->getFlashBag()->add(
+                            'warning',
+                            $this->translator->trans(
+                                'import.not_found_warning',
+                                [
+                                    '{{ locale }}' => $locale,
+                                    '{{ fields }}' => $notFoundValues,
+                                ],
+                                'validators'
+                            )
+                        );
                     }
                 }
             }
@@ -240,7 +270,10 @@ class ContentTranslationController extends AbstractController implements Backend
                         $value = $values[0];
 
                         if ($value) {
-                            $fieldTranslations[$translation->getLocale()] = $value;
+                            $fieldTranslations[$translation->getLocale()] = [
+                                'value' => $value,
+                                'type'  => $field->getType(),
+                            ];
                         }
                     } else if (!in_array($field->getType(), self::NON_TEXT_FIELDS)) {
                         throw new Exception('Unknown field type give, please contact a bolt developer to check this seemingly special case.');
@@ -271,12 +304,15 @@ class ContentTranslationController extends AbstractController implements Backend
                         $groupedTranslations[$locale] = [];
                     }
 
+                    $value = $translation[$this->defaultLocale]['value'];
+
                     // We encode the string to avoid errors with special characters that cannot be used as an array key
-                    $key = base64_encode($translation[$this->defaultLocale]);
+                    $key = base64_encode($value);
 
                     if (!isset($groupedTranslations[$locale][$key])) {
                         $groupedTranslations[$locale][$key] = [
-                            'text' => $translation[$locale] ?? $translation[$this->defaultLocale],
+                            'text' => $translation[$locale]['value'] ?? $translation[$this->defaultLocale]['value'],
+                            'type' => $translation[$locale]['type'] ?? $translation[$this->defaultLocale]['type'],
                             'ids'  => [$id],
                         ];
                     } else {
@@ -303,13 +339,14 @@ class ContentTranslationController extends AbstractController implements Backend
             foreach ($translations[$locale] as $key => $translation) {
                 $decodedKey          = base64_decode($key);
                 $translationText     = $translation['text'];
+                $translationType     = $translation['type'];
                 $translationTextJson = json_decode($translationText);
 
                 if (!$translationTextJson) {
-                    $this->addTranslationToCatalogues($catalogue, $decodedKey, $translationText, $translation['ids'], $translationText);
+                    $this->addTranslationToCatalogues($catalogue, $decodedKey, $translationText, $translation['ids'], $translationText, $translationType);
                 } else {
                     foreach ($translationTextJson as $key => $textParts) {
-                        $this->addTranslationToCatalogues($catalogue, $textParts, $textParts, $translation['ids'], $translationText, $key);
+                        $this->addTranslationToCatalogues($catalogue, $textParts, $textParts, $translation['ids'], $translationText, $translationType, $key);
                     }
                 }
             }
@@ -322,10 +359,11 @@ class ContentTranslationController extends AbstractController implements Backend
      * @param string           $translationText
      * @param array            $translationIds
      * @param string|null      $originalText
+     * @param string|null      $translationType
      * @param string|null      $postfix
      * @return void
      */
-    private function addTranslationToCatalogues(MessageCatalogue $catalogue, string $decodedKey, string $translationText, array $translationIds, string $originalText = null, string $postfix = null)
+    private function addTranslationToCatalogues(MessageCatalogue $catalogue, string $decodedKey, string $translationText, array $translationIds, string $originalText = null, string $translationType = null, string $postfix = null)
     {
         if ($translationText) {
             $catalogue->add(
@@ -341,6 +379,11 @@ class ContentTranslationController extends AbstractController implements Backend
                 $idNotes[] = [
                     'category' => 'id',
                     'content'  => $id,
+                ];
+
+                $idNotes[] = [
+                    'category' => 'type',
+                    'content'  => $translationType,
                 ];
 
                 if ($postfix) {
@@ -420,9 +463,9 @@ class ContentTranslationController extends AbstractController implements Backend
 
     /**
      * @param UploadedFile $file
-     * @return void
+     * @return array
      */
-    private function processXlfTranslations(UploadedFile $file): void
+    private function processXlfTranslations(UploadedFile $file): array
     {
         $fileContent    = file_get_contents($file->getPathname());
         $crawler        = new Crawler($fileContent);
@@ -431,6 +474,7 @@ class ContentTranslationController extends AbstractController implements Backend
         $translations   = $crawler->filterXPath('//xliff/file/unit')->each(
             function (Crawler $parentCrawler) {
                 $results  = [];
+                $source   = $parentCrawler->filterXPath('node()/segment/source')->text();
                 $original = $parentCrawler->filterXPath('node()/notes/note[@category="original"]');
                 $part     = $parentCrawler->filterXPath('node()/notes/note[@category="part"]');
                 $ids      = $parentCrawler->filterXPath('node()/notes/note[@category="id"]')->each(
@@ -451,13 +495,15 @@ class ContentTranslationController extends AbstractController implements Backend
                     $results['part'] = $part->text();
                 }
 
+                $results['source'] = $source;
+
                 return $results;
             }
         );
 
         $groupedTranslations = $this->groupXlfTranslations($translations);
 
-        $this->persistXlfTranslations($groupedTranslations, $targetLanguage);
+        return $this->persistXlfTranslations($groupedTranslations, $targetLanguage);
     }
 
     /**
@@ -483,6 +529,8 @@ class ContentTranslationController extends AbstractController implements Backend
 
             foreach ($groupedTranslation as $translationPart) {
                 if (isset($translationPart['original'])) {
+                    $mergedTranslation['source'] = $translationPart['original'];
+
                     foreach ($translationPart['ids'] as $id => $translation) {
                         if (!isset($mergedTranslation['ids'][$id])) {
                             $mergedTranslation['ids'][$id] = json_decode($translationPart['original']);
@@ -490,6 +538,8 @@ class ContentTranslationController extends AbstractController implements Backend
 
                         $mergedTranslation['ids'][$id]->{$translationPart['part']} = $translation;
                     }
+                } else {
+                    $mergedTranslation['source'] = $groupedTranslation['source'];
                 }
             }
 
@@ -504,30 +554,43 @@ class ContentTranslationController extends AbstractController implements Backend
     /**
      * @param array  $translations
      * @param string $targetLanguage
-     * @return void
+     * @return array
      */
-    private function persistXlfTranslations(array $translations, string $targetLanguage): void
+    private function persistXlfTranslations(array $translations, string $targetLanguage): array
     {
-        foreach ($translations as $translationGroup) {
-            foreach ($translationGroup as $translation) {
-                foreach ($translation as $id => $value) {
-                    $field            = $this->fieldRepository->find($id);
-                    $fieldTranslation = $this->getFieldTranslation($field->getTranslations(), $targetLanguage);
+        $notFound = [];
 
-                    if (is_object($value)) {
-                        $value = json_encode($value);
-                    }
+        foreach ($translations as $translationGroup) {
+            $source = $translationGroup['source'];
+
+            foreach ($translationGroup['ids'] as $id => $value) {
+                if (is_object($value)) {
+                    $value = json_encode($value);
+                }
+
+                $field = $this->fieldRepository->findOneById($id);
+
+                if (!$field) {
+                    $field = $this->fieldRepository->findOneByTranslationValue($source);
+                }
+
+                if ($field) {
+                    $fieldTranslation = $this->getFieldTranslation($field->getTranslations(), $targetLanguage);
 
                     $fieldTranslation->setValue($value);
                     $fieldTranslation->setLocale($targetLanguage);
                     $field->addTranslation($fieldTranslation);
 
                     $this->entityManager->persist($field);
+                } else {
+                    $notFound[$targetLanguage][] = $value;
                 }
             }
         }
 
         $this->entityManager->flush();
+
+        return $notFound;
     }
 
     /**

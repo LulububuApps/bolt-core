@@ -9,6 +9,317 @@
     </unit>
     <unit id="TpGxDI3" name="user.unknown_user">
       <segment>
+        <source>reset_password.no_token</source>
+        <target>In der URL oder in der Sitzung wurde kein Token zum Zurücksetzen des Passworts gefunden.</target>
+      </segment>
+    </unit>
+    <unit id="5Xr92sQ" name="reset_password.problem_with_request">
+      <notes>
+        <note category="file-source" priority="1">bolt-core/src/Controller/Backend/ResetPasswordController.php:113</note>
+        <note category="file-source" priority="1">bolt-core/src/Controller/Backend/ResetPasswordController.php:179</note>
+      </notes>
+      <segment>
+        <source>reset_password.problem_with_request</source>
+        <target>Es gab ein Problem bei der Bearbeitung Ihrer Anfrage zum Zurücksetzen des Passworts - %s</target>
+      </segment>
+    </unit>
+    <unit id="SjuOnue" name="reset_password.reset_successful">
+      <notes>
+        <note category="file-source" priority="1">bolt-core/src/Controller/Backend/ResetPasswordController.php:141</note>
+      </notes>
+      <segment>
+        <source>reset_password.reset_successful</source>
+        <target>Passwort Reset war erfolgreich.</target>
+      </segment>
+    </unit>
+    <unit id="OBmPOoB" name="user.updated_successfully">
+      <notes>
+        <note category="file-source" priority="1">bolt-core/src/Controller/Backend/UserEditController.php:157</note>
+        <note category="state" priority="1">new</note>
+      </notes>
+      <segment>
+        <source>user.updated_successfully</source>
+        <target>Erfolgreich aktualisiert</target>
+      </segment>
+    </unit>
+    <unit id="YDH.7uR" name="user.updated_profile">
+      <notes>
+        <note category="file-source" priority="1">bolt-core/src/Controller/Backend/UserEditController.php:191</note>
+        <note category="file-source" priority="1">bolt-core/src/Controller/Backend/UserEditController.php:223</note>
+        <note category="state" priority="1">new</note>
+      </notes>
+      <segment>
+        <source>user.updated_profile</source>
+        <target>Benutzer erfolgreich aktualisiert!</target>
+      </segment>
+    </unit>
+    <unit id="harDiJR" name="reset_password.enter_pwd">
+      <notes>
+        <note category="file-source" priority="1">bolt-core/src/Form/ChangePasswordFormType.php:34</note>
+      </notes>
+      <segment>
+        <source>reset_password.enter_pwd</source>
+        <target>Bitte ein Passwort eingeben</target>
+      </segment>
+    </unit>
+    <unit id="1JZeWxG" name="reset_password.minimum_length">
+      <notes>
+        <note category="file-source" priority="1">bolt-core/src/Form/ChangePasswordFormType.php:38</note>
+      </notes>
+      <segment>
+        <source>reset_password.minimum_length</source>
+        <target>Ihr Passwort sollte mindestens %s Zeichen lang sein</target>
+      </segment>
+    </unit>
+    <unit id="Tg5zdeo" name="reset_password.not_matching_pwds">
+      <notes>
+        <note category="file-source" priority="1">bolt-core/src/Form/ChangePasswordFormType.php:48</note>
+      </notes>
+      <segment>
+        <source>reset_password.not_matching_pwds</source>
+        <target>Die Passwortfelder stimmen nicht überein.</target>
+      </segment>
+    </unit>
+    <unit id="iiWFLaI" name="label.new_password">
+      <notes>
+        <note category="file-source" priority="1">bolt-core/src/Form/ChangePasswordFormType.php:31</note>
+        <note category="state" priority="1">new</note>
+      </notes>
+      <segment>
+        <source>label.new_password</source>
+        <target>Neues Passwort</target>
+      </segment>
+    </unit>
+    <unit id="rU9cSfq" name="label.repeat_password">
+      <notes>
+        <note category="file-source" priority="1">bolt-core/src/Form/ChangePasswordFormType.php:45</note>
+        <note category="state" priority="1">new</note>
+      </notes>
+      <segment>
+        <source>label.repeat_password</source>
+        <target>Passwort wiederholen</target>
+      </segment>
+    </unit>
+    <unit id="RZQ0CeQ" name="Plain password">
+      <notes>
+        <note category="file-source" priority="1">bolt-core/src/Form/ChangePasswordFormType.php:28</note>
+        <note category="file-source" priority="1">bolt-core/src/Form/UserType.php:79</note>
+        <note category="state" priority="1">new</note>
+      </notes>
+      <segment>
+        <source>Plain password</source>
+        <target>Klarpasswort</target>
+      </segment>
+    </unit>
+    <unit id="2SSLP1K" name="form.empty_username_email">
+      <notes>
+        <note category="file-source" priority="1">bolt-core/src/Form/LoginType.php:45</note>
+      </notes>
+      <segment>
+        <source>form.empty_username_email</source>
+        <target>Bitte Usernamen oder Email-Adresse eingeben</target>
+      </segment>
+    </unit>
+    <unit id="5Qf_RiO" name="form.empty_password">
+      <notes>
+        <note category="file-source" priority="1">bolt-core/src/Form/LoginType.php:57</note>
+      </notes>
+      <segment>
+        <source>form.empty_password</source>
+        <target>Bitte Passwort eingeben</target>
+      </segment>
+    </unit>
+    <unit id="RMPnq6o" name="label.username_or_email">
+      <notes>
+        <note category="file-source" priority="1">bolt-core/src/Form/LoginType.php:41</note>
+      </notes>
+      <segment>
+        <source>label.username_or_email</source>
+        <target>Username oder Email</target>
+      </segment>
+    </unit>
+    <unit id="9pvowqn" name="label.password">
+      <notes>
+        <note category="file-source" priority="1">bolt-core/src/Form/LoginType.php:53</note>
+        <note category="file-source" priority="1">bolt-core/templates/users/_form.html.twig:51</note>
+        <note category="file-source" priority="1">bolt-core/templates/users/profile.html.twig:42</note>
+      </notes>
+      <segment>
+        <source>label.password</source>
+        <target>Passwort</target>
+      </segment>
+    </unit>
+    <unit id="2hoKa1k" name="label.remembermeduration">
+      <notes>
+        <note category="file-source" priority="1">bolt-core/src/Form/LoginType.php:68</note>
+      </notes>
+      <segment>
+        <source>label.remembermeduration</source>
+        <target>Angemeldet bleiben? (%duration% Tage)</target>
+      </segment>
+    </unit>
+    <unit id="z_tOHwq" name="placeholder.username_or_email">
+      <notes>
+        <note category="file-source" priority="1">bolt-core/src/Form/LoginType.php:49</note>
+      </notes>
+      <segment>
+        <source>placeholder.username_or_email</source>
+        <target>Usernamen oder Email eingeben</target>
+      </segment>
+    </unit>
+    <unit id="BWi_f4Q" name="import_export_content_translations">
+      <segment>
+        <source>import_export_content_translations</source>
+        <target>Import/Export Inhalts-Übersetzungen</target>
+      </segment>
+    </unit>
+    <unit id="WrGgEr5" name="export_all_content_translations">
+      <segment>
+        <source>export_all_content_translations</source>
+        <target>Alle Inhalts-Übersetzungen exportieren</target>
+      </segment>
+    </unit>
+    <unit id="1GruCMx" name="export">
+      <segment>
+        <source>export</source>
+        <target>Exportieren</target>
+      </segment>
+    </unit>
+    <unit id="2UL2SIZ" name="import">
+      <segment>
+        <source>import</source>
+        <target>Importieren</target>
+      </segment>
+    </unit>
+    <unit id="Vet5xFg" name="bolt_content_translations_files">
+      <segment>
+        <source>bolt_content_translations_files</source>
+        <target>Übersetzungsdateien</target>
+      </segment>
+    </unit>
+    <unit id="IcINlR." name="bolt_content_translations_send">
+      <segment>
+        <source>bolt_content_translations_send</source>
+        <target>Inhalts-Übersetzungen importieren</target>
+      </segment>
+    </unit>
+    <unit id="B6SWRS6" name="caption.content_translations">
+      <segment>
+        <source>caption.content_translations</source>
+        <target>Inhalts-Übersetzungen</target>
+      </segment>
+    </unit>
+    <unit id="xgYhRkc" name="placeholder.password">
+      <notes>
+        <note category="file-source" priority="1">bolt-core/src/Form/LoginType.php:63</note>
+        <note category="state" priority="1">new</note>
+      </notes>
+      <segment>
+        <source>placeholder.password</source>
+        <target>Ihr Passwort</target>
+      </segment>
+    </unit>
+    <unit id="f8zXapF" name="form.empty_email">
+      <notes>
+        <note category="file-source" priority="1">bolt-core/src/Form/ResetPasswordRequestFormType.php:31</note>
+      </notes>
+      <segment>
+        <source>form.empty_email</source>
+        <target>Bitte Email-Adresse eingeben</target>
+      </segment>
+    </unit>
+    <unit id="Y7ajNNN" name="placeholder.email">
+      <notes>
+        <note category="file-source" priority="1">bolt-core/src/Form/ResetPasswordRequestFormType.php:35</note>
+      </notes>
+      <segment>
+        <source>placeholder.email</source>
+        <target>Ihre Email-Adresse</target>
+      </segment>
+    </unit>
+    <unit id="D2N6_cP" name="label.email">
+      <notes>
+        <note category="file-source" priority="1">bolt-core/src/Form/ResetPasswordRequestFormType.php:27</note>
+        <note category="file-source" priority="1">bolt-core/templates/users/_form.html.twig:68</note>
+        <note category="file-source" priority="1">bolt-core/templates/users/profile.html.twig:51</note>
+      </notes>
+      <segment>
+        <source>label.email</source>
+        <target>E-Mail-Adresse</target>
+      </segment>
+    </unit>
+    <unit id="yo6CbZw" name="Avatar">
+      <notes>
+        <note category="file-source" priority="1">bolt-core/src/Form/UserType.php:79</note>
+        <note category="state" priority="1">new</note>
+      </notes>
+      <segment>
+        <source>Avatar</source>
+        <target>Profilbild</target>
+      </segment>
+    </unit>
+    <unit id="yj3GEvR" name="Locale">
+      <notes>
+        <note category="file-source" priority="1">bolt-core/src/Form/UserType.php:79</note>
+        <note category="state" priority="1">new</note>
+      </notes>
+      <segment>
+        <source>Locale</source>
+        <target>Sprache</target>
+      </segment>
+    </unit>
+    <unit id="lpzL089" name="Email">
+      <notes>
+        <note category="file-source" priority="1">bolt-core/src/Form/UserType.php:79</note>
+        <note category="state" priority="1">new</note>
+      </notes>
+      <segment>
+        <source>Email</source>
+        <target>E-Mail</target>
+      </segment>
+    </unit>
+    <unit id="K39qhN6" name="Display name">
+      <notes>
+        <note category="file-source" priority="1">bolt-core/src/Form/UserType.php:79</note>
+        <note category="state" priority="1">new</note>
+      </notes>
+      <segment>
+        <source>Display name</source>
+        <target>Anzeigename</target>
+      </segment>
+    </unit>
+    <unit id="47ienTP" name="Username">
+      <notes>
+        <note category="file-source" priority="1">bolt-core/src/Form/UserType.php:79</note>
+        <note category="state" priority="1">new</note>
+      </notes>
+      <segment>
+        <source>Username</source>
+        <target>Benutzername</target>
+      </segment>
+    </unit>
+    <unit id="kg5BPH1" name="Status">
+      <notes>
+        <note category="file-source" priority="1">bolt-core/src/Form/UserType.php:121</note>
+        <note category="state" priority="1">new</note>
+      </notes>
+      <segment>
+        <source>Status</source>
+        <target>Status</target>
+      </segment>
+    </unit>
+    <unit id="wlM3BVR" name="Roles">
+      <notes>
+        <note category="file-source" priority="1">bolt-core/src/Form/UserType.php:121</note>
+        <note category="state" priority="1">new</note>
+      </notes>
+      <segment>
+        <source>Roles</source>
+        <target>Rollen</target>
+      </segment>
+    </unit>
+    <unit id="TpGxDI3" name="user.unknown_user">
+      <segment>
         <source>user.unknown_user</source>
         <target>Unbekannter Benutzer</target>
       </segment>
