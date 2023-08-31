@@ -66,6 +66,9 @@
                         >
                             <i :class="[template.icon, 'fas fa-fw']" />
                             {{ template.label }}
+                            <div v-if="template.image">
+                                <img :src="template.image" :alt="template.label" />
+                            </div>
                         </a>
                     </div>
                 </div>
