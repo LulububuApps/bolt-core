@@ -51,6 +51,7 @@ class FieldType extends Collection
             'default_locale' => 'en',
             'height' => '10',
             'icon' => '',
+            'image' => '',
             'maxlength' => '',
             'autocomplete' => true,
             'values' => [],
