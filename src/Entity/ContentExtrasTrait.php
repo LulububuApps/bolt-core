@@ -32,7 +32,7 @@ trait ContentExtrasTrait
 
         return array_filter([
             'title' => $this->contentExtension->getAnyTitle($content, 80),
-            'image' => $this->contentExtension->getImage($content, true),
+            //'image' => $this->contentExtension->getImage($content, true), // This currently crashes
             'excerpt' => $this->contentExtension->getExcerpt($content),
             'link' => $this->contentExtension->getLink($content),
             'editLink' => $this->contentExtension->getEditLink($content),
