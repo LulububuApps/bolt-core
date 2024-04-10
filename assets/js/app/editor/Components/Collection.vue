@@ -223,7 +223,14 @@ export default {
                 .first();
             // We use this 'innerText' trick to ensure the title is plain text.
             var title = document.createElement('span');
-            title.innerHTML = $(input).val() ? $(input).val() : label.attr('data-label');
+            const content = $(input).val();
+            let text = label.attr('data-label');
+
+            if (content) {
+              text += ` (${content})`;
+            }
+
+            title.innerHTML = text;
             label.html(title.innerText);
         }
         /**
