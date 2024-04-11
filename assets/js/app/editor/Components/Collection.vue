@@ -1,9 +1,16 @@
 <template>
-    <div :id="name" ref="collectionContainer" class="collection-container">
+    <div
+        :id="name"
+        ref="collectionContainer"
+        class="collection-container"
+    >
         <div class="expand-buttons">
             <label>{{ labels.field_label }}:</label>
 
-            <div class="btn-group" role="group">
+            <div
+                class="btn-group"
+                role="group"
+            >
                 <button class="btn btn-secondary btn-sm collection-expand-all">
                     <i class="fas fa-fw fa-expand-alt"></i>
                     {{ labels.expand_all }}
@@ -25,10 +32,16 @@
                 <div class="card-header d-flex align-items-center">
                     <!-- Initial title. This is replaced by dynamic title in JS below. -->
                     <i class="card-marker-caret fa fa-caret-right"></i>
-                    <span class="badge badge-secondary inline" :title="element.label">
+                    <span
+                        class="badge badge-secondary inline"
+                        :title="element.label"
+                    >
                         <i :class="[element.icon, 'fas']"></i>
                     </span>
-                    <div class="collection-item-title" :data-label="element.label">
+                    <div
+                        class="collection-item-title"
+                        :data-label="element.label"
+                    >
                         {{ element.label }}
                     </div>
                     <!-- Navigation buttons -->
@@ -37,14 +50,23 @@
             </div>
             <div class="card details">
                 <!-- The actual field -->
-                <div :is="compile(element.content)" class="card-body"></div>
+                <div
+                    :is="compile(element.content)"
+                    class="card-body"
+                ></div>
             </div>
         </div>
 
         <div class="row">
             <div class="col-12">
-                <p v-if="templates.length > 1" class="mt-4 mb-1">{{ labels.add_collection_item }}:</p>
-                <div v-if="templates.length > 1" class="dropdown">
+                <p
+                    v-if="templates.length > 1"
+                    class="mt-4 mb-1"
+                >{{ labels.add_collection_item }}:</p>
+                <div
+                    v-if="templates.length > 1"
+                    class="dropdown"
+                >
                     <button
                         :id="name + '-dropdownMenuButton'"
                         :disabled="!allowMore"
@@ -56,7 +78,10 @@
                     >
                         <i class="fas fa-fw fa-plus"></i> {{ labels.select }}
                     </button>
-                    <div class="dropdown-menu" :aria-labelledby="name + '-dropdownMenuButton'">
+                    <div
+                        class="dropdown-menu"
+                        :aria-labelledby="name + '-dropdownMenuButton'"
+                    >
                         <a
                             v-for="template in templates"
                             :key="template.label"
@@ -67,7 +92,10 @@
                             <i :class="[template.icon, 'fas fa-fw']" />
                             {{ template.label }}
                             <div v-if="template.image">
-                                <img :src="template.image" :alt="template.label" />
+                                <img
+                                    :src="template.image"
+                                    :alt="template.label"
+                                />
                             </div>
                         </a>
                     </div>
@@ -90,51 +118,52 @@
 
 <script>
 import Vue from 'vue';
-import $ from 'jquery';
+import $   from 'jquery';
+
 var uniqid = require('locutus/php/misc/uniqid');
 export default {
-    name: 'EditorCollection',
+    name:  'EditorCollection',
     props: {
-        name: {
-            type: String,
+        name:           {
+            type:     String,
             required: true,
         },
-        templates: {
-            type: Array,
+        templates:      {
+            type:     Array,
             required: true,
         },
         existingFields: {
             type: Array,
         },
-        labels: {
-            type: Object,
+        labels:         {
+            type:     Object,
             required: true,
         },
-        limit: {
-            type: Number,
+        limit:          {
+            type:     Number,
             required: true,
         },
-        variant: {
-            type: String,
+        variant:        {
+            type:     String,
             required: true,
         },
     },
     data() {
         let templateSelectOptions = [];
         return {
-            elements: this.existingFields,
-            counter: this.existingFields.length,
-            templateSelectName: 'templateSelect' + this.id,
+            elements:              this.existingFields,
+            counter:               this.existingFields.length,
+            templateSelectName:    'templateSelect' + this.id,
             templateSelectOptions: templateSelectOptions,
-            selector: {
+            selector:              {
                 collectionContainer: '#' + this.name,
-                item: ' .collection-item',
-                remove: ' .action-remove-collection-item',
-                moveUp: ' .action-move-up-collection-item',
-                moveDown: ' .action-move-down-collection-item',
-                expandAll: ' .collection-expand-all',
-                collapseAll: ' .collection-collapse-all',
-                editor: ' #editor',
+                item:                ' .collection-item',
+                remove:              ' .action-remove-collection-item',
+                moveUp:              ' .action-move-up-collection-item',
+                moveDown:            ' .action-move-down-collection-item',
+                expandAll:           ' .collection-expand-all',
+                collapseAll:         ' .collection-collapse-all',
+                editor:              ' #editor',
             },
         };
     },
@@ -210,6 +239,7 @@ export default {
                 updateTitle(this);
             });
         });
+
         /**
          * Pass a .collection-item element to update the title
          * with the value of the first text-based field.
@@ -222,17 +252,18 @@ export default {
                 .find('textarea,input[type="text"]')
                 .first();
             // We use this 'innerText' trick to ensure the title is plain text.
-            var title = document.createElement('span');
-            const content = $(input).val();
-            let text = label.attr('data-label');
+            var title   = document.createElement('span');
+            const value = $(input).val();
+            let html    = `<span>${label.attr('data-label')}</span>`;
 
-            if (content) {
-              text += ` (${content})`;
+            if (value) {
+                html = value + html;
             }
 
-            title.innerHTML = text;
-            label.html(title.innerText);
+            title.innerHTML = html;
+            label.html(html);
         }
+
         /**
          * Open newly inserted collection items.
          */
@@ -293,15 +324,15 @@ export default {
         },
         addCollectionItem(event) {
             // duplicate template without reference
-            let template = $.extend(true, {}, this.getSelectedTemplate(event));
-            const realhash = uniqid();
+            let template     = $.extend(true, {}, this.getSelectedTemplate(event));
+            const realhash   = uniqid();
             template.content = template.content.replace(new RegExp(template.hash, 'g'), realhash);
-            template.hash = realhash;
+            template.hash    = realhash;
             this.elements.push(template);
             this.counter++;
         },
         getSelectedTemplate(event) {
-            const target = $(event.target).attr('data-template')
+            const target    = $(event.target).attr('data-template')
                 ? $(event.target)
                 : $(event.target).closest('[data-template]');
             let selectValue = target.attr('data-template');
