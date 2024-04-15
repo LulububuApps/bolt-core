@@ -98,6 +98,16 @@ final class BackendMenuBuilder implements BackendMenuBuilderInterface
 
         $this->addContentOthers($menu);
 
+        if ($this->authorizationChecker->isGranted('translation')) {
+            $menu->addChild('Translations', [
+                'uri' => $this->urlGenerator->generate('translation_index'),
+                'extras' => [
+                    'name' => $t->trans('caption.translations'),
+                    'icon' => 'fa-language',
+                ],
+            ]);
+        }
+
         if ($this->authorizationChecker->isGranted('extensionmenus')) {
             $this->addExtensionMenus($menu);
         }
@@ -246,16 +256,6 @@ final class BackendMenuBuilder implements BackendMenuBuilderInterface
                 'extras' => [
                     'name' => $t->trans('caption.clear_cache'),
                     'icon' => 'fa-eraser',
-                ],
-            ]);
-        }
-
-        if ($this->authorizationChecker->isGranted('translation')) {
-            $menu->getChild('Maintenance')->addChild('Translations', [
-                'uri' => $this->urlGenerator->generate('translation_index'),
-                'extras' => [
-                    'name' => $t->trans('caption.translations'),
-                    'icon' => 'fa-language',
                 ],
             ]);
         }
