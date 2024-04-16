@@ -122,48 +122,48 @@ import $   from 'jquery';
 
 var uniqid = require('locutus/php/misc/uniqid');
 export default {
-    name:  'EditorCollection',
+    name: 'EditorCollection',
     props: {
-        name:           {
-            type:     String,
+        name: {
+            type: String,
             required: true,
         },
-        templates:      {
-            type:     Array,
+        templates: {
+            type: Array,
             required: true,
         },
         existingFields: {
             type: Array,
         },
-        labels:         {
-            type:     Object,
+        labels: {
+            type: Object,
             required: true,
         },
-        limit:          {
-            type:     Number,
+        limit: {
+            type: Number,
             required: true,
         },
-        variant:        {
-            type:     String,
+        variant: {
+            type: String,
             required: true,
         },
     },
     data() {
         let templateSelectOptions = [];
         return {
-            elements:              this.existingFields,
-            counter:               this.existingFields.length,
-            templateSelectName:    'templateSelect' + this.id,
+            elements: this.existingFields,
+            counter: this.existingFields.length,
+            templateSelectName: 'templateSelect' + this.id,
             templateSelectOptions: templateSelectOptions,
-            selector:              {
+            selector: {
                 collectionContainer: '#' + this.name,
-                item:                ' .collection-item',
-                remove:              ' .action-remove-collection-item',
-                moveUp:              ' .action-move-up-collection-item',
-                moveDown:            ' .action-move-down-collection-item',
-                expandAll:           ' .collection-expand-all',
-                collapseAll:         ' .collection-collapse-all',
-                editor:              ' #editor',
+                item: ' .collection-item',
+                remove: ' .action-remove-collection-item',
+                moveUp: ' .action-move-up-collection-item',
+                moveDown: ' .action-move-down-collection-item',
+                expandAll: ' .collection-expand-all',
+                collapseAll: ' .collection-collapse-all',
+                editor: ' #editor',
             },
         };
     },
