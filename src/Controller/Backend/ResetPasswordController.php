@@ -199,6 +199,7 @@ class ResetPasswordController extends TwigAwareController
             ->subject($config['mail_subject'])
             ->htmlTemplate($config['mail_template'])
             ->context([
+                'user' => $user,
                 'resetToken' => $resetToken,
                 'tokenLifetime' => $this->resetPasswordHelper->getTokenLifetime(),
             ]);
