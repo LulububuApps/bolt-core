@@ -122,48 +122,48 @@ import $   from 'jquery';
 
 var uniqid = require('locutus/php/misc/uniqid');
 export default {
-    name: 'EditorCollection',
+    name:  'EditorCollection',
     props: {
-        name: {
-            type: String,
+        name:           {
+            type:     String,
             required: true,
         },
-        templates: {
-            type: Array,
+        templates:      {
+            type:     Array,
             required: true,
         },
         existingFields: {
             type: Array,
         },
-        labels: {
-            type: Object,
+        labels:         {
+            type:     Object,
             required: true,
         },
-        limit: {
-            type: Number,
+        limit:          {
+            type:     Number,
             required: true,
         },
-        variant: {
-            type: String,
+        variant:        {
+            type:     String,
             required: true,
         },
     },
     data() {
         let templateSelectOptions = [];
         return {
-            elements: this.existingFields,
-            counter: this.existingFields.length,
-            templateSelectName: 'templateSelect' + this.id,
+            elements:              this.existingFields,
+            counter:               this.existingFields.length,
+            templateSelectName:    'templateSelect' + this.id,
             templateSelectOptions: templateSelectOptions,
-            selector: {
+            selector:              {
                 collectionContainer: '#' + this.name,
-                item: ' .collection-item',
-                remove: ' .action-remove-collection-item',
-                moveUp: ' .action-move-up-collection-item',
-                moveDown: ' .action-move-down-collection-item',
-                expandAll: ' .collection-expand-all',
-                collapseAll: ' .collection-collapse-all',
-                editor: ' #editor',
+                item:                ' .collection-item',
+                remove:              ' .action-remove-collection-item',
+                moveUp:              ' .action-move-up-collection-item',
+                moveDown:            ' .action-move-down-collection-item',
+                expandAll:           ' .collection-expand-all',
+                collapseAll:         ' .collection-collapse-all',
+                editor:              ' #editor',
             },
         };
     },
@@ -245,19 +245,22 @@ export default {
          * with the value of the first text-based field.
          */
         function updateTitle(item) {
-            const label = $(item)
+            const label         = $(item)
                 .find('.collection-item-title')
                 .first();
-            const input = $(item)
+            const input         = $(item)
                 .find('textarea,input[type="text"]')
                 .first();
             // We use this 'innerText' trick to ensure the title is plain text.
-            var title   = document.createElement('span');
-            const value = $(input).val();
-            let html    = `<span>${label.attr('data-label')}</span>`;
+            const title         = document.createElement('span');
+            const value         = $(input).val();
+            let html            = `<span>${label.attr('data-label')}</span>`;
+            const temporary     = document.createElement('div');
+            temporary.innerHTML = value;
+            const cleanValue    = temporary.textContent || temporary.innerText || '';
 
             if (value) {
-                html = value + html;
+                html = cleanValue + html;
             }
 
             title.innerHTML = html;
