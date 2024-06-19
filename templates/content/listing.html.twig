@@ -83,21 +83,29 @@
                     </p>
 
                     {% if contentType.get('taxonomy') %}
-                            {% for taxonomy in contentType.get('taxonomy') %}
-                                {% set taxonomyDefinition = config.get('taxonomies/' ~ taxonomy) %}
-                                {% if taxonomyDefinition and taxonomyDefinition.behaves_like != 'tags' %}
-                                <p>
-                                    <strong>{{ taxonomyDefinition.singular_name }}:</strong>
+                        {% for taxonomy in contentType.get('taxonomy') %}
+                            {% set taxonomyDefinition = config.get('taxonomies/' ~ taxonomy) %}
+                            {% if taxonomyDefinition and taxonomyDefinition.behaves_like != 'tags' %}
+                                <strong>{{ taxonomyDefinition.singular_name }}:</strong>
+                                <select
+                                    class="form-control"
+                                    name="taxonomy"
+                                >
+                                    <option
+                                        value=""
+                                        {% if taxonomyValue is empty %}selected{% endif %}>
+                                        {{ 'listing.option_select_taxonomy'|trans }}
+                                    </option>
                                     {% for key, value in taxonomyDefinition.options %}
-                                        <a class="badge badge-tertiary {% if taxonomy == taxonomyName and taxonomyValue == key %}selected{% endif %}"
-                                           href="?taxonomy={{ (taxonomyDefinition.slug ~ '=' ~ key)|url_encode }}">
+                                        <option
+                                            value="{{ taxonomy ~ '=' ~ key }}"
+                                            {% if taxonomy == taxonomyName and taxonomyValue == key %}selected{% endif %}>
                                             {{ value }}
-                                        </a>
+                                        </option>
                                     {% endfor %}
-                                </p>
-                                {% endif %}
-                            {% endfor %}
-                        </p>
+                                </select>
+                            {% endif %}
+                        {% endfor %}
                     {% endif %}
 
                     <p>
