@@ -5,6 +5,7 @@
             v-model="selected"
             :limit="1000"
             :multiple="multiple"
+            :defaultvalue="defaultvalue"
             :options="options"
             :options-limit="optionslimit"
             :searchable="autocomplete || taggable"
@@ -72,6 +73,7 @@ export default {
         options: Array,
         optionslimit: Number,
         multiple: Boolean,
+        defaultvalue: String | Boolean,
         taggable: Boolean,
         readonly: Boolean,
         classname: String,

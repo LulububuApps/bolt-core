@@ -5,7 +5,7 @@
 
      - options: The actual options that are available in the select
      - multiple: A boolean to set whether or not we allow multiple selections
- #}
+#}
 
 {% block label %}
     {% if not hideLabel|default(false) %}
@@ -21,18 +21,22 @@
     {% set multiple = field.definition.get('multiple')|default ? 'true' : 'false' %}
 {% endif %}
 
+{% if defaultvalue is not defined %}
+    {% set defaultvalue = field.definition.get('defaultvalue')|default %}
+{% endif %}
+
 {% if autocomplete is not defined %}
-	{% set autocomplete = field.definition.get('autocomplete')|default ? 'true' : 'false' %}
+    {% set autocomplete = field.definition.get('autocomplete')|default ? 'true' : 'false' %}
 {% endif %}
 
 {% if limit is not defined %}
-	{% set limit = field.definition.get('limit')|default(2000) %}
+    {% set limit = field.definition.get('limit')|default(2000) %}
 {% endif %}
 
 {% block field %}
     <editor-select
         :classname="{{ ['wide-options ', class]|join|json_encode }}"
-        :value="{{ value|json_encode }}"
+        :value="{{ value|default(defaultvalue)|json_encode }}"
         :name='{{ name|json_encode }}'
         :id='{{ id|json_encode }}'
         :options="{{ options|json_encode }}"
