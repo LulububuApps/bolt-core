@@ -134,7 +134,7 @@ export default {
 
             const input = $(this.$el).find('.editor--date.input');
 
-            if (this.val === '') {
+            if (!this.val || this.val === '') {
                 input.attr('required', true);
             } else {
                 input.removeAttr('required');
