@@ -57,8 +57,9 @@ class ListingController extends TwigAwareController implements FrontendZoneInter
             return $this->redirectToDefaultLocale();
         }
 
+        $isMobile = $this->request->cookies->get('isMobile') === 'true';
         $page = (int) $this->getFromRequest('page', '1');
-        $amountPerPage = $contentType->get('listing_records');
+        $amountPerPage = !$isMobile ? $contentType->get('listing_records') : $this->config->get('general/listing_records_mobile');
         $params = $this->parseQueryParams($this->request, $contentType);
 
         /** @var Content|Pagerfanta $content */
